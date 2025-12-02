@@ -707,15 +707,3 @@ docker-compose up -d --scale backend=3
 5. Commit: `git commit -am 'Add feature'`
 6. Push: `git push origin feature-name`
 7. Create a Pull Request
-
-## License
-
-MIT License - See LICENSE file for details
-
-## Support
-
-For issues or questions:
-- Check the Troubleshooting section above
-- Review environment variables configuration
-- Verify all services are running: `docker-compose ps`
-- Check logs: `docker-compose logs -f backend`
