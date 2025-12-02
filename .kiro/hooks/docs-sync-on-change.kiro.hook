@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Documentation Sync",
+  "description": "Listens to source file changes (*.ts, *.js, *.py, *.java, *.go, *.rs, *.cpp, *.c, *.h, package.json, requirements.txt, go.mod, Cargo.toml) and prompts the agent to update relevant documentation in README.md or /docs folder",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Source code has been modified. Please review the changes and update the documentation accordingly. If a README.md exists, update it with any relevant changes to functionality, API, or usage. If a /docs folder exists, update the appropriate documentation files there. Ensure the documentation accurately reflects the current state of the code."
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Security Review on File Changes",
+  "description": "Automatically reviews changed files for potential security issues including API keys, tokens, credentials, private keys, encryption keys, certificates, authentication tokens, session IDs, passwords, secrets in configuration files, IP addresses with sensitive data, hardcoded internal URLs, and database connection credentials. Provides specific security risk highlights, secure alternative approaches, and security best practices recommendations.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": []
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Review the changed files for potential security issues. Specifically look for:\n1. API keys, tokens, or credentials in source code\n2. Private keys or sensitive credentials\n3. Encryption keys or certificates\n4. Authentication tokens or session IDs\n5. Passwords or secrets in configuration files\n6. IP addresses containing sensitive data\n7. Hardcoded internal URLs\n8. Database connection credentials\n\nFor each issue found:\n1. Highlight the specific security risk\n2. Suggest a secure alternative approach\n3. Recommend security best practices\n\nIf no security issues are found, briefly confirm the file is clear."
+  },
+  "workspaceFolderName": "CHAMPA",
+  "shortName": "security-review-hook"
+}

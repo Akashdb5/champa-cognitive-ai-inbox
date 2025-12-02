@@ -1,0 +1,42 @@
+# Development docker-compose with local PostgreSQL and Qdrant
+# Use this for local development: docker-compose -f docker-compose.dev.yml up
+
+services:
+  # Local PostgreSQL for development
+  postgres:
+    image: postgres:15-alpine
+    container_name: champa-postgres-dev
+    environment:
+      POSTGRES_USER: champa
+      POSTGRES_PASSWORD: champa_password
+      POSTGRES_DB: champa
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U champa"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Local Qdrant for development
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: champa-qdrant-dev
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
+  qdrant_data:
+    driver: local
