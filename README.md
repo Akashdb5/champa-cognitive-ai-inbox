@@ -719,8 +719,3 @@ For issues or questions:
 - Review environment variables configuration
 - Verify all services are running: `docker-compose ps`
 - Check logs: `docker-compose logs -f backend`
-
-
-git remote add origin https://github.com/Akashdb5/champa-cognitive-ai-inbox.git
-git branch -M main
-git push -u origin main
