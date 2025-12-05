@@ -448,8 +448,8 @@ class SmartReplyService:
             outgoing_message
         )
         
-        if not result.get("success"):
-            raise Exception(f"Platform send failed: {result.get('error', 'Unknown error')}")
+        if not result.success:
+            raise Exception(f"Platform send failed: {result.error or 'Unknown error'}")
     
     async def record_interaction(
         self,
