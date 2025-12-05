@@ -20,6 +20,7 @@ allowed_origins = [
     "http://localhost:3000",  # React dev server
     "http://localhost",       # Docker frontend (port 80)
     "http://localhost:80",    # Docker frontend (explicit port)
+    "https://champa-cognitive-ai-inbox-frontend.vercel.app",  # Production frontend
 ]
 
 # Add frontend URL from settings if it's not localhost
