@@ -83,6 +83,7 @@ class MessageFilters(BaseModel):
     platform: Optional[Literal["gmail", "slack", "calendar"]] = None
     start_date: Optional[datetime] = None
     end_date: Optional[datetime] = None
+    exclude_spam: bool = False
     min_priority: Optional[float] = Field(None, ge=0.0, le=1.0)
     has_actionables: Optional[bool] = None
     limit: int = Field(50, ge=1, le=100)

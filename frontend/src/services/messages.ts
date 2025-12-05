@@ -42,16 +42,7 @@ export interface MessageSearchResponse {
 
 export const messagesApi = {
     async getMessages(filters?: MessageFilters): Promise<NormalizedMessage[]> {
-        const params = new URLSearchParams();
-        if (filters?.platform) params.append('platform', filters.platform);
-        if (filters?.start_date) params.append('start_date', filters.start_date);
-        if (filters?.end_date) params.append('end_date', filters.end_date);
-        if (filters?.exclude_spam !== undefined) params.append('exclude_spam', filters.exclude_spam.toString());
-        if (filters?.min_priority !== undefined) params.append('min_priority', filters.min_priority.toString());
-        if (filters?.limit) params.append('limit', filters.limit.toString());
-        if (filters?.offset) params.append('offset', filters.offset.toString());
-
-        const response = await api.get<NormalizedMessage[]>(`/api/messages?${params.toString()}`);
+        const response = await api.post<NormalizedMessage[]>('/api/messages/list', filters || {});
         return response.data;
     },
 

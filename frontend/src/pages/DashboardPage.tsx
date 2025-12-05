@@ -258,8 +258,8 @@ export const DashboardPage = () => {
                             {spamStats?.recent_spam && spamStats.recent_spam.length > 0 ? (
                                 spamStats.recent_spam.slice(0, 5).map((spam) => (
                                     <div key={spam.message_id} className="flex items-start gap-3 p-3 border-2 border-border bg-destructive/10 dark:bg-destructive/5">
-                                        <Shield size={20} className="text-destructive mt-1" />
-                                        <div className="flex-1">
+                                        <Shield size={20} className="text-destructive mt-1 shrink-0" />
+                                        <div className="flex-1 min-w-0">
                                             <p className="font-bold text-sm truncate">{spam.sender}</p>
                                             <p className="text-xs text-muted-foreground truncate">{spam.subject}</p>
                                             <span className="text-xs bg-destructive/20 dark:bg-destructive/10 border border-border px-2 py-0.5 mt-1 inline-block">

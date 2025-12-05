@@ -1,4 +1,5 @@
 {
+  "_comment": "SPA routing and security headers - Updated 2024-12-05",
   "rewrites": [
     {
       "source": "/(.*)",

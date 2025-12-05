@@ -118,15 +118,9 @@ async def sync_messages(
         )
 
 
-@router.get("/", response_model=List[NormalizedMessage])
+@router.post("/list", response_model=List[NormalizedMessage])
 async def get_messages(
-    platform: Optional[str] = Query(None, description="Filter by platform (gmail, slack, calendar)"),
-    start_date: Optional[datetime] = Query(None, description="Filter messages after this date"),
-    end_date: Optional[datetime] = Query(None, description="Filter messages before this date"),
-    exclude_spam: bool = Query(False, description="Exclude spam messages from results"),
-    min_priority: Optional[float] = Query(None, ge=0.0, le=1.0, description="Minimum priority score"),
-    limit: int = Query(50, ge=1, le=100, description="Maximum number of messages to return"),
-    offset: int = Query(0, ge=0, description="Number of messages to skip"),
+    filters: MessageFilters,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
     message_service: MessageService = Depends(get_message_service)
@@ -145,31 +139,31 @@ async def get_messages(
     query = db.query(Message).filter(Message.user_id == current_user.id)
     
     # Apply platform filter
-    if platform:
-        query = query.filter(Message.platform == platform)
+    if filters.platform:
+        query = query.filter(Message.platform == filters.platform)
     
     # Apply date filters
-    if start_date:
-        query = query.filter(Message.timestamp >= start_date)
-    if end_date:
-        query = query.filter(Message.timestamp <= end_date)
+    if filters.start_date:
+        query = query.filter(Message.timestamp >= filters.start_date)
+    if filters.end_date:
+        query = query.filter(Message.timestamp <= filters.end_date)
     
     # Apply spam filter
-    if exclude_spam:
+    if filters.exclude_spam:
         query = query.outerjoin(MessageAnalysis, Message.id == MessageAnalysis.message_id)
         query = query.filter(
             (MessageAnalysis.is_spam == False) | (MessageAnalysis.is_spam.is_(None))
         )
     
     # Apply priority filter
-    if min_priority is not None:
-        if not exclude_spam:  # Join if not already joined
+    if filters.min_priority is not None:
+        if not filters.exclude_spam:  # Join if not already joined
             query = query.outerjoin(MessageAnalysis, Message.id == MessageAnalysis.message_id)
-        query = query.filter(MessageAnalysis.priority_score >= min_priority)
+        query = query.filter(MessageAnalysis.priority_score >= filters.min_priority)
     
     # Order and paginate
     query = query.order_by(Message.timestamp.desc())
-    query = query.offset(offset).limit(limit)
+    query = query.offset(filters.offset or 0).limit(filters.limit or 50)
     
     messages = query.all()
     
