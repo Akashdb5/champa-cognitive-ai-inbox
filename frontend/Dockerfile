@@ -10,10 +10,10 @@ COPY package*.json ./
 # Install dependencies
 RUN npm ci
 
-# Copy source code
+# Copy source code (including .env file)
 COPY . .
 
-# Build the application
+# Build the application (Vite will read from .env file)
 RUN npm run build
 
 # Production stage

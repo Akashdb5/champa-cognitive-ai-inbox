@@ -16,8 +16,10 @@ app = FastAPI(
 from app.core.config import settings
 
 allowed_origins = [
-    "http://localhost:5173",  # Vite default port
-    "http://localhost:3000",  # React default port
+    "http://localhost:5173",  # Vite dev server
+    "http://localhost:3000",  # React dev server
+    "http://localhost",       # Docker frontend (port 80)
+    "http://localhost:80",    # Docker frontend (explicit port)
 ]
 
 # Add frontend URL from settings if it's not localhost

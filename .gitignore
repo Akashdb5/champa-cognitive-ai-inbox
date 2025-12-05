@@ -58,6 +58,6 @@ logs/
 
 # Documentation archive
 .docs/
-
+.agent/
 # Test scripts
 scripts/

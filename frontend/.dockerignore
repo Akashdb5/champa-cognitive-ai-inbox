@@ -6,7 +6,8 @@ dist
 build
 
 # Environment
-.env
+# Note: .env is INCLUDED in the Docker build so Vite can read environment variables
+# It's still in .gitignore to prevent committing secrets to version control
 .env.local
 .env.*.local
 
