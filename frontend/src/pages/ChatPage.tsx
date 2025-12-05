@@ -1,16 +1,17 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ScrollText, MessageCircle, Mail } from 'lucide-react';
+import { ScrollText, MessageCircle, Mail, Trash2 } from 'lucide-react';
 import { useChat } from '../hooks/useChat';
 import { usePendingReplies } from '../hooks/useReplies';
 import { useState, useRef, useEffect } from 'react';
 
 export const ChatPage = () => {
-    const { messages, isLoading, error, sendMessage } = useChat();
+    const { messages, isLoading, error, sendMessage, clearHistory } = useChat();
     const { replies, approveReply, rejectReply } = usePendingReplies();
     const [inputMessage, setInputMessage] = useState('');
     const [actionLoading, setActionLoading] = useState<string | null>(null);
+    const [isClearing, setIsClearing] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const scrollToBottom = () => {
@@ -52,6 +53,21 @@ export const ChatPage = () => {
         }
     };
 
+    const handleClearChat = async () => {
+        if (!window.confirm('Are you sure you want to clear the chat history? This cannot be undone.')) {
+            return;
+        }
+        
+        setIsClearing(true);
+        try {
+            await clearHistory();
+        } catch (err: any) {
+            console.error('Failed to clear chat:', err);
+        } finally {
+            setIsClearing(false);
+        }
+    };
+
     const getPlatformIcon = () => {
         // In a real implementation, you'd look up the message to get its platform
         // For now, return a default icon
@@ -68,6 +84,17 @@ export const ChatPage = () => {
                         Ask questions about your messages, request smart replies, and manage AI-generated drafts.
                     </p>
                 </div>
+                {messages.length > 0 && (
+                    <Button
+                        variant="outline"
+                        className="border-2 border-black shadow-retro-xs font-retro uppercase tracking-[0.2em] flex items-center gap-2"
+                        onClick={handleClearChat}
+                        disabled={isClearing}
+                    >
+                        <Trash2 size={16} />
+                        {isClearing ? 'Clearing...' : 'Clear Chat'}
+                    </Button>
+                )}
             </header>
 
             <Card className="border-2 border-black shadow-retro-md flex flex-col">
