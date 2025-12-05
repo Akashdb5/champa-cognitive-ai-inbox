@@ -122,21 +122,49 @@ export const ChatPage = () => {
                                                                 <div className="w-10 h-10 border-2 border-black shadow-retro-xs flex items-center justify-center bg-muted">
                                                                     <PlatformIcon size={18} />
                                                                 </div>
-                                                                <div>
+                                                                <div className="flex-1">
                                                                     <p className="font-retro uppercase tracking-[0.2em]">Smart Reply</p>
-                                                                    <p className="text-sm text-muted-foreground">Status: {reply.status}</p>
+                                                                    <p className="text-sm text-muted-foreground">
+                                                                        {reply.message_platform && <span className="capitalize">{reply.message_platform}</span>}
+                                                                        {reply.message_sender && <span> • From: {reply.message_sender}</span>}
+                                                                    </p>
                                                                 </div>
                                                             </div>
-                                                            <p className="text-sm bg-muted px-3 py-2 border border-black whitespace-pre-wrap">
-                                                                {reply.draft_content}
-                                                            </p>
+                                                            
+                                                            {/* Original Message Context */}
+                                                            {(reply.message_subject || reply.message_preview) && (
+                                                                <div className="border border-black bg-muted/50 p-3 space-y-1">
+                                                                    <p className="text-xs font-retro uppercase tracking-[0.2em] text-muted-foreground">
+                                                                        Replying to:
+                                                                    </p>
+                                                                    {reply.message_subject && (
+                                                                        <p className="text-sm font-semibold">{reply.message_subject}</p>
+                                                                    )}
+                                                                    {reply.message_preview && (
+                                                                        <p className="text-xs text-muted-foreground italic">
+                                                                            {reply.message_preview}
+                                                                        </p>
+                                                                    )}
+                                                                </div>
+                                                            )}
+                                                            
+                                                            {/* Draft Reply */}
+                                                            <div>
+                                                                <p className="text-xs font-retro uppercase tracking-[0.2em] text-muted-foreground mb-1">
+                                                                    Your Draft:
+                                                                </p>
+                                                                <p className="text-sm bg-background px-3 py-2 border border-black whitespace-pre-wrap">
+                                                                    {reply.draft_content}
+                                                                </p>
+                                                            </div>
+                                                            
                                                             <div className="flex gap-2">
                                                                 <Button
                                                                     className="border-2 border-black bg-green-400 shadow-retro-xs font-retro uppercase tracking-[0.2em] flex-1"
                                                                     onClick={() => handleApproveReply(reply.id)}
                                                                     disabled={actionLoading === reply.id}
                                                                 >
-                                                                    {actionLoading === reply.id ? 'Approving...' : 'Approve'}
+                                                                    {actionLoading === reply.id ? 'Approving...' : 'Approve & Send'}
                                                                 </Button>
                                                                 <Button
                                                                     variant="outline"

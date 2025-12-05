@@ -13,10 +13,16 @@ class SmartReply(BaseModel):
     message_id: UUID
     user_id: UUID
     draft_content: str
-    status: Literal["pending", "approved", "rejected", "sent"]
+    status: Literal["pending", "approved", "rejected", "sent", "suggestion"]
     created_at: datetime
     reviewed_at: Optional[datetime] = None
     sent_at: Optional[datetime] = None
+    
+    # Message context for display
+    message_subject: Optional[str] = None
+    message_sender: Optional[str] = None
+    message_platform: Optional[str] = None
+    message_preview: Optional[str] = None
     
     class Config:
         from_attributes = True
@@ -29,7 +35,7 @@ class SmartReplyRequest(BaseModel):
 
 class SmartReplyApproval(BaseModel):
     """Approve a smart reply"""
-    action: Literal["approve"]
+    approved: Optional[bool] = True
 
 
 class SmartReplyEdit(BaseModel):
@@ -39,7 +45,7 @@ class SmartReplyEdit(BaseModel):
 
 class SmartReplyRejection(BaseModel):
     """Reject a smart reply"""
-    action: Literal["reject"]
+    reason: Optional[str] = None
 
 
 class SmartReplyResponse(BaseModel):

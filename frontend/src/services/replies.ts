@@ -5,9 +5,15 @@ export interface SmartReply {
     message_id: string;
     user_id: string;
     draft_content: string;
-    status: 'pending' | 'approved' | 'rejected' | 'sent';
+    status: 'pending' | 'approved' | 'rejected' | 'sent' | 'suggestion';
     created_at: string;
-    updated_at: string;
+    reviewed_at?: string;
+    sent_at?: string;
+    // Message context
+    message_subject?: string;
+    message_sender?: string;
+    message_platform?: string;
+    message_preview?: string;
 }
 
 export interface SmartReplyRequest {

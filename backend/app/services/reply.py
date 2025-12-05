@@ -214,14 +214,29 @@ class SmartReplyService:
             limit: Maximum number of replies
         
         Returns:
-            List of pending smart replies
+            List of pending smart replies with message context
         """
         replies = self.db.query(SmartReply).filter(
             SmartReply.user_id == user_id,
             SmartReply.status == "pending"
         ).order_by(SmartReply.created_at.desc()).limit(limit).all()
         
-        return [SmartReplySchema.model_validate(r) for r in replies]
+        # Enrich with message context
+        result = []
+        for reply in replies:
+            message = self.db.query(Message).filter(Message.id == reply.message_id).first()
+            reply_dict = SmartReplySchema.model_validate(reply).model_dump()
+            
+            if message:
+                reply_dict['message_subject'] = message.subject
+                reply_dict['message_sender'] = message.sender
+                reply_dict['message_platform'] = message.platform
+                # Preview first 100 chars
+                reply_dict['message_preview'] = message.content[:100] + '...' if len(message.content) > 100 else message.content
+            
+            result.append(SmartReplySchema.model_validate(reply_dict))
+        
+        return result
     
     def get_reply(self, reply_id: UUID, user_id: UUID) -> Optional[SmartReplySchema]:
         """
