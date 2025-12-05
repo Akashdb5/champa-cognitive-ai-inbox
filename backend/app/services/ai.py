@@ -126,10 +126,18 @@ class AIService:
             deadline_date = None
             if deadline.date:
                 try:
-                    # Simple date parsing - in production, use dateutil or similar
+                    # Try ISO format first
                     deadline_date = datetime.fromisoformat(deadline.date)
                 except:
-                    pass
+                    try:
+                        # Try common date formats
+                        from dateutil import parser
+                        deadline_date = parser.parse(deadline.date)
+                    except:
+                        # If all parsing fails, log and continue without date
+                        import logging
+                        logger = logging.getLogger(__name__)
+                        logger.warning(f"Failed to parse deadline date: {deadline.date}")
             
             actionable = ActionableItem(
                 message_id=message.id,
