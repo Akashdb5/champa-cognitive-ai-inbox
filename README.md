@@ -18,6 +18,19 @@
 
 ---
 
+## 🔐 Test Credentials
+
+Want to try Champa without setting up your own accounts? Use these test credentials:
+
+```
+Username: birajdarakash98@gmail.com
+Password: k95HnMimMXXZD3q
+```
+
+> **Note**: This is a demo account with limited functionality. For full features, connect your own Gmail, Slack, and Calendar accounts.
+
+---
+
 ## Overview
 
 Champa is an intelligent unified inbox that brings together **Gmail**, **Slack**, and **Google Calendar** into a single, AI-powered interface. Using advanced LangGraph agents and LangChain orchestration, Champa automatically analyzes every message, extracts actionable insights, and helps you respond faster - all while keeping you in control.
